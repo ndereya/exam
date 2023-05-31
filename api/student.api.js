@@ -5,6 +5,20 @@ const { StudentModel } = require('../Model/StudentModel');
 
 const studentApi = express.Router();
 //view students
+studentApi.get("/students", async (req, res) => {
+    try {
+        let data = await StudentModel.find();
+        res.send({
+            message: data
+        });
+    } catch (err) {
+        res.send({
+            message: err.message
+        });
+    }
+});
+
+//view student
 studentApi.get("/student/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -19,10 +33,10 @@ studentApi.get("/student/:id", async (req, res) => {
     }
 });
 
-
 //register student data to the db
 studentApi.post("/register",async (req,res)=>{
     try {
+
         let data =  new StudentModel(req.body);
     await data.save();
     res.send(
